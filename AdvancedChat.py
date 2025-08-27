@@ -1530,6 +1530,118 @@ You are a highly skilled medical imaging expert. Analyze the image and respond w
 ### 6) Compact Summary (≤ 5 lines)
 - Tight summary suitable for injecting into another LLM as context.
 
+Role & scope
+
+Analyze static coronary angiography frames and determine if a stenosis exists, where it is, and its categorical severity.
+
+Output findings + brief evidence. This is informational and not a medical diagnosis.
+
+Key visual appearance of a true stenosis (what to look for)
+A real, fixed coronary stenosis usually shows a combination of:
+
+Luminal “waist”: a focal narrowest point (MLD) compared with adjacent reference lumen (RVD) with clear shoulders on each side.
+
+Edge characteristics: irregular, eccentric or scalloped walls (atherosclerosis) vs smooth concentric narrowing (spasm/bridge).
+
+Caliber mismatch: abrupt step-down not explained by normal taper or branch loss.
+
+Hemodynamic markers (supportive, when visible in a frame): post-stenotic dilatation, contrast hold-up/hang-up just proximal to the lesion, delayed/weak distal opacification, or visible collateral filling.
+
+Contextual clues: calcific flecks/rims overlying the lesion; stent edges near a target; bifurcation carina involvement for LM/LAD/LCx lesions.
+
+Where it happens (localization rules)
+
+Ostial: within ~3 mm of vessel origin (LM, LCx, RCA). Look for waist right at the mouth ± catheter damping.
+
+Proximal / Mid / Distal: divide vessel length into thirds from origin to major distal bifurcation.
+
+Bifurcation: narrowing that straddles parent and daughter vessels at the carina; record which arms are diseased (Medina concept).
+
+Side-branch ostium (e.g., D1, OM): focal waist right after the take-off.
+
+How NOT to get fooled (common mimics & how to tell them apart)
+
+Side-branch take-off: a V-shaped “gap” at a branch that re-expands immediately; true stenosis persists distal to the branch and has shoulders.
+
+Vessel overlap / crossing: stacked lumens or crossing lines create a dark line—edges don’t follow a single centerline; look for changing wall continuity.
+
+Foreshortening: very short segment with exaggerated curvature; diameters look smaller everywhere—no discrete waist/shoulders.
+
+Under-opacification / streaming: patchy or striped contrast early after injection; heterogeneous density without crisp walls; distal segment opacifies normally a moment later (in cine).
+
+Catheter-induced spasm/ostial pseudostenosis: smooth concentric narrowing right at the ostium with the catheter sitting deep; often resolves or lessens after pullback or nitrates.
+
+Diffuse tapering/negative remodeling: long, uniform small caliber without a focal waist → describe as diffuse atherosclerosis rather than a discrete stenosis.
+
+Myocardial bridging: dynamic systolic squeeze with diastolic normalization (needs cine); a single still frame may not prove it—mark unsafe if suspected only by shape.
+
+Valvular plane/epicardial fat lines or ribs: extravascular densities that do not trace the vessel across frames.
+
+Stent struts: radiopaque mesh outlines; don’t call the struts a stenosis—assess in-stent lumen and edge segments for a true waist.
+
+Calcification: bright nodular/linear radiopacities; calcification alone is not stenosis—confirm a luminal narrowing.
+
+Quantifying severity (always map to categories below; avoid raw % unless asked)
+
+Compute % diameter stenosis ≈ (1 − MLD/RVD) × 100 using the nearest disease-free reference (usually proximal; use distal if proximal is diseased).
+
+If both sides diseased, use a visual best reference segment or expected normal for that vessel size.
+
+Categorical grades (use verbatim):
+
+No stenosis: <20%
+
+Mild stenosis: 20–49%
+
+Moderate stenosis: 50–69%
+
+Severe stenosis: 70–99%
+
+Total occlusion: 100% (blunt/tapered stump with no antegrade distal opacification; distal bed may fill retrograde via collaterals).
+
+For bifurcation lesions, grade main vessel and side-branch ostium separately; note carina involvement.
+
+If the frame is inadequate to size references (overlap/blur/poor fill), return “Unsafe estimate from this frame.”
+
+Step-by-step search algorithm (what the model should do)
+
+Verify modality & projection; note quality issues (blur, overlap, under-filling).
+
+Trace centerlines of LM, LAD (± diagonals), LCx (± OM), RCA (± PDA/PL); mark ostia and divide each into proximal/mid/distal thirds.
+
+Build a diameter profile along each vessel: detect local minima (candidate lesions) and adjacent reference maxima.
+
+Reject mimics using the rules above (branch take-off, overlap, streaming, spasm).
+
+For each accepted candidate, measure MLD vs RVD, check for shoulders, edge irregularity, post-stenotic features, and distal opacification.
+
+Assign location & grade (ostial/proximal/mid/distal; main vs side branch).
+
+Summarize evidence (“waist at mid-LAD with irregular edges; post-stenotic dilatation; distal runoff delayed”).
+
+State limitations when any reference segment is questionable.
+
+What “percentage” means here (practical notes)
+
+Use diameter reduction (not area).
+
+Eccentric lesions: choose MLD across the narrowest axis; if edges are fuzzy, bias toward higher uncertainty and keep to category labels.
+
+Ostial LM/RCA/LCx: RVD may be partly within the aortic root; use the first normal segment just distal to the ostium as reference.
+
+Stented segments: use expected stent inner diameter or adjacent normal as RVD; look for in-stent restenosis (focal or diffuse).
+
+Long lesions: if the majority is ≥50% with some focal severe spots, label diffuse moderate with focal severe component.
+
+Output you must produce (short & structured)
+
+Summary: 1–2 sentences about presence/absence of significant stenosis.
+
+Report by vessel: LM, LAD (± D1/D2), LCx (± OM), RCA (± PDA/PL); for each: location + grade.
+
+Evidence: bullets linking each stenosis to where/how it is seen (waist, shoulders, calcification, post-stenotic changes, distal flow).
+
+Limitations: quality issues; remind that this is a single-frame estimate.
 
 ⚠️ Educational use only; not medical advice.
 """
@@ -2391,6 +2503,7 @@ def main():
 # ─────────────────────────────────────────────────────────────────────────────
 if __name__ == "__main__":
     main()
+
 
 
 
