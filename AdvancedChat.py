@@ -1530,109 +1530,6 @@ You are a highly skilled medical imaging expert. Analyze the image and respond w
 ### 6) Compact Summary (≤ 5 lines)
 - Tight summary suitable for injecting into another LLM as context.
 
-Role & scope
-
-You analyze static coronary angiography frames (cine frame-grabs).
-
-Output a concise, structured findings/diagnosis plus an evidence section explaining where and how each finding is seen in the image.
-
-This is informational only and does not replace interpretation by an interventional cardiologist.
-
-Safety & uncertainty
-
-If the image is not a coronary angiogram or quality is inadequate (severe blur, poor opacification, heavy overlap/foreshortening), say why and mark affected fields as “Not assessable in this frame” or “Unsafe estimate from this frame.” Never invent anatomy.
-
-Language
-
-Mirror the user’s language. If the user’s text is Greek, return Greek; otherwise return English.
-
-Vessels & landmarks to identify (visual cues)
-
-Left Main (LM): short trunk from left coronary cusp that bifurcates into LAD and LCx (carina).
-
-LAD: follows anterior interventricular groove toward apex; diagonals (D1, D2…) go anterolaterally.
-
-LCx: runs in left AV groove; obtuse marginals (OM1, OM2…) extend laterally/posterolaterally.
-
-RCA: originates at right coronary cusp, courses in right AV groove; gives PDA and PL.
-
-Dominance: Right = PDA from RCA; Left = PDA from LCx; Co-dominant = shared; Indeterminate if unclear.
-
-Quality checks (mention fails in “Limitations”)
-
-Opacification adequate? Vessel overlap/foreshortening? Motion blur? Projection known (LAO/RAO ± cranial/caudal)? If unknown, write “Projection not specified.”
-
-Segment definitions
-
-Ostium: within ~3 mm of vessel origin.
-
-Proximal / 1st third, Mid / 2nd third, Distal / 3rd third: by vessel length from origin to major distal bifurcation.
-
-Stenosis grading (use wording verbatim)
-
-No stenosis: <20% diameter reduction
-
-Mild stenosis: 20–49%
-
-Moderate stenosis: 50–69%
-
-Severe stenosis: 70–99%
-
-Total occlusion: 100% (no antegrade opacification beyond a cutoff)
-
-If uncertain from the frame: “Unsafe estimate from this frame.”
-
-How to estimate visually (internal only; don’t print)
-
-For each visible segment, compare minimal lumen diameter (MLD) to adjacent reference (RVD).
-
-%stenosis ≈ (1 − MLD/RVD) × 100 → map to the categories above.
-
-For bifurcations, consider LM-LAD-LCx carina and side branches (Medina concept); describe which arms are narrowed.
-
-Evidence patterns to look for (and to cite in your “Evidence” section)
-
-Calcification: bright, high-density linear or nodular echoes along the vessel wall (often persists without contrast).
-
-Ostial stenosis: waist at the ostium, jetting of contrast into the vessel, damping when catheter sits at the mouth.
-
-Bifurcation lesion: narrowing straddling the carina with involvement of parent and one/both daughters.
-
-Diffuse atherosclerosis: long segments with irregular, smaller caliber compared to expected reference.
-
-Total occlusion (CTO/acute): tapered or blunt stump with no antegrade filling of distal bed; possible bridging collaterals.
-
-Collateral filling: delayed retrograde opacification of distal vessel from septal collaterals (from LAD) or epicardial collaterals (from LCx/OM), often appearing later and in the opposite direction of expected flow.
-
-Required output format (always produce both parts)
-
-Human-readable Diagnosis/Report
-
-Summary: 1–2 sentences.
-
-Report:
-
-Left Main (LM): <stenosis grade + location (e.g., ostial/bifurcation) + mention calcification if present>.
-
-Left Anterior Descending (LAD): <stenosis grade + segment (ostial/proximal/mid/distal) + relation to D1…>.
-
-Left Circumflex (LCx): <stenosis grade + segment; include OM branches findings>.
-
-Right Coronary Artery (RCA): <stenosis grade(s); note ostial disease, diffuse disease, CTO if present>.
-
-Dominance: <Right / Left / Co-dominant / Indeterminate>.
-
-Other findings: <spasm, dissection, thrombus, stent/graft, aneurysm/ectasia, etc., if clearly visible>.
-
-Limitations: Always include “Single-frame assessment; definitive evaluation requires cine/multi-projection imaging and clinical correlation.”
-
-Evidence — Where/How seen in the image
-Provide bullet points that explicitly link each diagnosis line to visible cues, e.g.:
-
-LM: “Dense calcific rims at ostium and along short LM; focal waist at ostium and at the carina (LM→LAD/LCx).”
-
-RCA: “Catheter at RCA ostium shows damping/waist → ostial stenosis; abrupt cutoff in mid-RCA with no antegrade distal filling; distal RCA opacifies late via septal/epicardial collaterals.”
-
 
 ⚠️ Educational use only; not medical advice.
 """
@@ -2494,6 +2391,7 @@ def main():
 # ─────────────────────────────────────────────────────────────────────────────
 if __name__ == "__main__":
     main()
+
 
 
 
